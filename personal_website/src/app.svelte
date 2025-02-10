@@ -80,7 +80,7 @@
         <div class="flex-1 grid grid-cols-3 gap-4">
             {#each projects as project (project.id)}
             <button
-            class="aspect-square relative clip-path-hexagon transition-all duration-300
+            class="aspect-square relative clip-path-hexagon transition-all duration-100
             {hoveredProject?.id === project.id ? 'bg-green-500 scale-105' : 'bg-green-700 hover:bg-green-600'}"
             on:mouseenter={() => hoveredProject = project}
             on:mouseleave={() => hoveredProject = null}
