@@ -1,112 +1,48 @@
 <script lang="ts">
   import { fade } from "svelte/transition"
-  //import HexagonGrid from "./hexagonGrid.svelte";
-  import PreviewPanel from "./previewPanel.svelte";
-  import ProjectCarousel from "./projectCarousel.svelte";
-  import ProjectModal from "./projectModal.svelte";
-  import { projects } from "./projects";
+  import PreviewPanel from "./previewPanel.svelte"
+  import ProjectCarousel from "./projectCarousel.svelte"
+  import ProjectModal from "./projectModal.svelte"
+  import { projects } from "./projects"
   import type { Project } from "./types"
-  // Types
-
-
-  // Sample projects data
-  // const projects: Project[] = [
-  //   {
-  //     id: "1",
-  //     title: "Project A",
-  //     description:
-  //       "A revolutionary project that showcases innovative technology",
-  //     imageUrl: "/placeholder-image-1.jpg",
-  //     path: "/project-alpha",
-  //   },
-  //   {
-  //     id: "2",
-  //     title: "Project B",
-  //     description: "Exploring the boundaries of what's possible",
-  //     imageUrl: "/placeholder-image-2.jpg",
-  //     path: "/project-beta",
-  //   },
-  //   {
-  //     id: "3",
-  //     title: "Project C",
-  //     description: "Pushing the envelope of development",
-  //     imageUrl: "/placeholder-image-3.jpg",
-  //     path: "/project-gamma",
-  //   },
-  //   {
-  //     id: "4",
-  //     title: "Project D",
-  //     description: "Pushing the envelope of development",
-  //     imageUrl: "/placeholder-image-3.jpg",
-  //     path: "/project-gamma",
-  //   },
-  //   {
-  //     id: "5",
-  //     title: "Project E",
-  //     description:
-  //       "A revolutionary project that showcases innovative technology",
-  //     imageUrl: "/placeholder-image-1.jpg",
-  //     path: "/project-alpha",
-  //   },
-  //   {
-  //     id: "6",
-  //     title: "Project F",
-  //     description:
-  //       "A revolutionary project that showcases innovative technology",
-  //     imageUrl: "/placeholder-image-1.jpg",
-  //     path: "/project-alpha",
-  //   },
-  //   {
-  //     id: "7",
-  //     title: "Project G",
-  //     description:
-  //       "A revolutionary project that showcases innovative technology",
-  //     imageUrl: "/placeholder-image-1.jpg",
-  //     path: "/project-alpha",
-  //   },
-  //   {
-  //     id: "8",
-  //     title: "Project H",
-  //     description:
-  //       "A revolutionary project that showcases innovative technology",
-  //     imageUrl: "/placeholder-image-1.jpg",
-  //     path: "/project-alpha",
-  //   },
-  // ]
 
   // Reactive variables
-  let hoveredProject: Project | null = $state(null);
+  let hoveredProject: Project | null = $state(null)
   let selectedProject: Project | null = $state(null)
-  let carouselComponent: { next: () => void; prev: () => void; goTo: (index: number) => void } | null = $state(null);
+  let carouselComponent: {
+    next: () => void
+    prev: () => void
+    goTo: (index: number) => void
+  } | null = $state(null)
 
   // Function to handle keyboard navigation
   function handleKeydown(event: KeyboardEvent) {
     // If modal is open, don't handle carousel navigation
-    if (selectedProject) return;
+    if (selectedProject) return
 
     // Prevent default behavior for arrow keys to avoid page scrolling
     if (["ArrowLeft", "ArrowRight", "Enter"].includes(event.key)) {
-      event.preventDefault();
+      event.preventDefault()
     }
-    
+
     switch (event.key) {
       case "ArrowLeft":
         // Navigate to previous project
-        carouselComponent?.prev();
-        break;
+        carouselComponent?.prev()
+        break
       case "ArrowRight":
         // Navigate to next project
-        carouselComponent?.next();
-        break;
+        carouselComponent?.next()
+        break
       case "Enter":
         if (hoveredProject) {
-          selectedProject = hoveredProject;
+          selectedProject = hoveredProject
           // Navigate to the project
-          console.log(`Navigating to ${hoveredProject.path}`);
+          console.log(`Navigating to ${hoveredProject.path}`)
           // You could add actual navigation here
           // window.location.href = hoveredProject.path;
         }
-        break;
+        break
     }
   }
 
@@ -117,7 +53,7 @@
     window.addEventListener("keydown", handleKeydown)
 
     if (projects.length > 0) {
-      hoveredProject = projects[0];
+      hoveredProject = projects[0]
     }
   })
 
@@ -134,28 +70,28 @@
   }
 
   function closeModal() {
-    selectedProject = null;
+    selectedProject = null
   }
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
 
-<main class="flex min-h-screen flex-col items-center bg-gray-700 p-4 overflow-hidden">
-  <div class="flex-1 w-full max-w-4xl relative">
-    <PreviewPanel {hoveredProject}/>
-    <ProjectCarousel 
-      {projects} 
-      {hoveredProject} 
-      onProjectHover={handleProjectHover} 
+<main
+  class="flex min-h-screen flex-col items-center overflow-hidden bg-gray-700 p-4"
+>
+  <div class="relative w-full max-w-4xl flex-1">
+    <PreviewPanel {hoveredProject} />
+    <ProjectCarousel
+      {projects}
+      {hoveredProject}
+      onProjectHover={handleProjectHover}
       onProjectSelect={handleProjectSelect}
       bind:this={carouselComponent}
     />
-    </div>
+  </div>
 
-    <ProjectModal 
-      project={selectedProject} 
-      onClose={closeModal} 
-    />
-  </main>
+  <ProjectModal project={selectedProject} onClose={closeModal} />
+</main>
+
 <style lang="postcss">
 </style>
