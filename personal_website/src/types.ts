@@ -6,8 +6,12 @@ export interface Project {
     imageUrl: string
     path: string
     detailedDescription?: string;
+    problem?: string;
+    solution?: string;
+    challenges?: string;
     technologies?: string[];
+    features?: string[];
     demoUrl?: string;
     githubUrl?: string;
-    features?: string[];
+    galleryImages?: string[]; // Array of image URLs for the gallery
   }
