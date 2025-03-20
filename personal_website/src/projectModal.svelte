@@ -2,6 +2,7 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte"
   import { fade, fly } from "svelte/transition"
+  import { tick } from 'svelte';
   import { cubicOut } from "svelte/easing"
   import type { Project } from "./types"
 
@@ -37,10 +38,11 @@
     }
   })
 
+
   // Handle click outside
   function handleOutsideClick(event: MouseEvent) {
     if (modalElement && !modalElement.contains(event.target as Node)) {
-      props.onClose()
+      props.onClose();
     }
   }
 
@@ -72,6 +74,112 @@
     // Restore body scrolling when modal is closed
     document.body.style.overflow = ""
   })
+
+  // Custom animations
+  function expandAnimation(
+  node: HTMLElement,
+  { duration = 1200, easing = cubicOut }
+) {
+  // Store target dimensions once the element is laid out.
+  const targetWidth = node.offsetWidth;
+  const targetHeight = node.offsetHeight;
+
+  return {
+    duration,
+    easing,
+    css: (t: number) => {
+      let width: number, height: number;
+
+      if (t < 0.4) {
+        // Phase 1: animate the width from 0 to full, height is a thin line.
+        const horizontalProgress = t / 0.65;
+        width = targetWidth * horizontalProgress;
+        height = 12; // a very thin horizontal line
+      } else {
+        // Phase 2: width is fixed; height grows from a thin line to full height.
+        const verticalProgress = (t - 0.65) / 0.35;
+        width = targetWidth;
+        height = 2 + (targetHeight - 2) * verticalProgress;
+      }
+
+      // Only animate dimensions (and optionally opacity).
+      return `
+        width: ${width}px;
+        height: ${height}px;
+        opacity: 1;
+      `;
+    }
+  };
+}
+
+
+
+function shrinkAnimation(node: HTMLElement, { 
+  duration = 400,
+  easing = cubicOut
+}) {
+  // Store original dimensions
+  const startWidth = node.offsetWidth;
+  const startHeight = node.offsetHeight;
+  
+  return {
+    duration,
+    easing,
+    css: (t: number, u: number) => {
+      let width: number, height: number, opacity: number;
+      
+      if (u > 0.6) {
+        // Phase 1: Vertical shrinking. u decreases from 1 to 0.6.
+        const verticalProgress = (u - 0.6) / 0.4; // normalize 0-1 over first phase
+        height = startHeight * verticalProgress + 2 * (1 - verticalProgress);
+        width = startWidth;
+        opacity = 1;
+      } else {
+        // Phase 2: Horizontal shrinking and fade out. u decreases from 0.6 to 0.
+        const horizontalProgress = u / 0.6; // normalize 0-1 over second phase
+        width = startWidth * horizontalProgress;
+        height = 2;
+        opacity = horizontalProgress; // fade out linearly
+      }
+      
+      return `
+        width: ${width}px;
+        height: ${height}px;
+        opacity: ${opacity};
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-${width / 2}px, -${height / 2}px);
+        overflow: hidden;
+      `;
+    }
+  };
+}
+
+
+// Show content after animation completes
+let animationComplete = $state(false);
+
+$effect(() => {
+  if (props.project) {
+    animationComplete = false;
+    tick().then(() => {
+      setTimeout(() => {
+        animationComplete = true;
+        if (modalElement) {
+          modalElement.classList.add('animation-complete');
+        }
+      }, 600); // Match this to your animation duration
+    });
+  }
+});
+
+onDestroy(() => {
+  if (modalElement) {
+    modalElement.classList.remove('animation-complete');
+  }
+});
+
 </script>
 
 {#if props.project}
@@ -86,8 +194,8 @@
     <!-- Backdrop overlay -->
     <div
       class="absolute inset-0 bg-black/70"
-      onclick={props.onClose}
-      onkeydown={(e) => e.key === "Enter" && props.onClose()}
+      onclick={() => props.onClose()}
+      onkeydown={(e) => e.key === "Enter" && !props.isClosing && props.onClose()}
       tabindex="0"
       role="button"
       aria-label="Close modal"
@@ -96,13 +204,13 @@
     <!-- Modal container -->
     <div
       bind:this={modalElement}
-      class="relative flex h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-lg bg-white shadow-2xl dark:bg-gray-800"
-      transition:fly={{ y: 20, duration: 300, easing: cubicOut }}
+      class="relative w-full max-w-5xl h-[90vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden flex flex-col modal-container"
+      in:expandAnimation={{ duration: 1000 }}
     >
       <!-- Close button -->
       <button
         class="absolute right-4 top-4 z-10 rounded-full bg-white/80 p-2 text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-700"
-        onclick={props.onClose}
+        onclick={() => props.onClose}
         aria-label="Close modal"
       >
         <svg
@@ -122,10 +230,10 @@
       </button>
 
       <!-- Scrollable content container -->
-      <div class="flex-grow overflow-y-auto">
+      <div class="flex-grow overflow-y-auto modal-content">
         <!-- Image gallery -->
         <div class="relative h-72 w-full bg-gray-900 sm:h-80 md:h-96">
-          {#if props.project.galleryImages && props.project.galleryImages.length > 0}
+          {#if props.project.galleryImages.length > 0}
             <!-- Gallery image -->
             <img
               src={props.project.galleryImages[currentImageIndex]}
@@ -385,3 +493,51 @@
     </div>
   </div>
 {/if}
+
+<style>
+    /* Custom scrollbar styling */
+    .modal-content {
+      scrollbar-width: thin; /* Firefox */
+      scrollbar-color: rgba(156, 163, 175, 0.5) transparent; /* Firefox */
+    }
+  
+    /* For Webkit browsers (Chrome, Safari, etc.) */
+    .modal-content::-webkit-scrollbar {
+      width: 8px;
+    }
+  
+    .modal-content::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  
+    .modal-content::-webkit-scrollbar-thumb {
+      background-color: rgba(156, 163, 175, 0.5);
+      border-radius: 20px;
+    }
+  
+    /* For dark mode */
+    :global(.dark) .modal-content {
+      scrollbar-color: rgba(75, 85, 99, 0.5) transparent; /* Firefox */
+    }
+  
+    :global(.dark) .modal-content::-webkit-scrollbar-thumb {
+      background-color: rgba(75, 85, 99, 0.5);
+    }
+
+    /* Animation container styles */
+  .modal-container {
+    transform-origin: center center;
+    will-change: transform, width, height, opacity;
+  }
+  
+  /* Hide content during animation */
+  .modal-container:not(.animation-complete) > * {
+    opacity: 0;
+  }
+  
+  /* Show content when animation is complete */
+  /* .modal-container.animation-complete > * {
+    opacity: 1;
+    transition: opacity 0.2s ease-out;
+  } */
+  </style>

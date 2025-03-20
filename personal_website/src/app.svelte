@@ -4,11 +4,13 @@
   import ProjectCarousel from "./projectCarousel.svelte"
   import ProjectModal from "./projectModal.svelte"
   import { projects } from "./projects"
+
   import type { Project } from "./types"
 
   // Reactive variables
   let hoveredProject: Project | null = $state(null)
   let selectedProject: Project | null = $state(null)
+
   let carouselComponent: {
     next: () => void
     prev: () => void
@@ -39,8 +41,6 @@
           selectedProject = hoveredProject
           // Navigate to the project
           console.log(`Navigating to ${hoveredProject.path}`)
-          // You could add actual navigation here
-          // window.location.href = hoveredProject.path;
         }
         break
     }
@@ -70,7 +70,8 @@
   }
 
   function closeModal() {
-    selectedProject = null
+    console.log(selectedProject + " is closing")
+    selectedProject = null;
   }
 </script>
 
@@ -90,7 +91,10 @@
     />
   </div>
 
-  <ProjectModal project={selectedProject} onClose={closeModal} />
+  <ProjectModal 
+    project={selectedProject}
+    onClose={closeModal}
+  />
 </main>
 
 <style lang="postcss">
