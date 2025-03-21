@@ -14,6 +14,7 @@
   // State for the modal element and gallery
   let modalElement: HTMLDivElement | null = $state(null)
   let currentImageIndex: number = $state(0)
+  let localVisible:boolean = $state(true)
 
   // Function to handle gallery navigation
   function nextImage() {
@@ -49,7 +50,7 @@
   // Handle escape key
   function handleKeydown(event: KeyboardEvent) {
     if (event.key === "Escape") {
-      props.onClose()
+        props.onClose()
     } else if (
       event.key === "ArrowLeft" &&
       props.project?.galleryImages?.length
@@ -80,10 +81,11 @@
   node: HTMLElement,
   { duration = 1200, easing = cubicOut }
 ) {
-  // Store target dimensions once the element is laid out.
-  const targetWidth = node.offsetWidth;
-  const targetHeight = node.offsetHeight;
-
+    // Store target dimensions once the element is laid out.
+    const targetWidth = node.offsetWidth;
+    const targetHeight = node.offsetHeight;
+    console.log("domain expanded")
+    
   return {
     duration,
     easing,
@@ -99,7 +101,7 @@
         // Phase 2: width is fixed; height grows from a thin line to full height.
         const verticalProgress = (t - 0.65) / 0.35;
         width = targetWidth;
-        height = 2 + (targetHeight - 2) * verticalProgress;
+        height = 12 + (targetHeight - 12) * verticalProgress;
       }
 
       // Only animate dimensions (and optionally opacity).
@@ -114,34 +116,38 @@
 
 
 
-function shrinkAnimation(node: HTMLElement, { 
-  duration = 400,
-  easing = cubicOut
-}) {
-  // Store original dimensions
-  const startWidth = node.offsetWidth;
-  const startHeight = node.offsetHeight;
-  
+export function shrinkAnimation(
+  node: HTMLElement,
+  { duration = 1200, easing = cubicOut }
+) {
+  const targetWidth = node.offsetWidth;
+  const targetHeight = node.offsetHeight;
+  const THIN_HEIGHT = 12; // use the same thin value
+  console.log("smol")
+
   return {
     duration,
     easing,
     css: (t: number, u: number) => {
+      // For out transitions, u is 1 - t.
       let width: number, height: number, opacity: number;
-      
-      if (u > 0.6) {
-        // Phase 1: Vertical shrinking. u decreases from 1 to 0.6.
-        const verticalProgress = (u - 0.6) / 0.4; // normalize 0-1 over first phase
-        height = startHeight * verticalProgress + 2 * (1 - verticalProgress);
-        width = startWidth;
+      if (u > 0.35) {
+        // Phase 1: vertical shrink
+        // u goes from 1 to 0.35; map that to a verticalProgress from 1 to 0.
+        const verticalProgress = (u - 0.35) / 0.65;
+        // At u = 1, verticalProgress = 1 → height = THIN_HEIGHT + (targetHeight - THIN_HEIGHT) * 1 = targetHeight.
+        // At u = 0.35, verticalProgress = 0 → height = THIN_HEIGHT.
+        height = THIN_HEIGHT + (targetHeight - THIN_HEIGHT) * verticalProgress;
+        width = targetWidth;
         opacity = 1;
       } else {
-        // Phase 2: Horizontal shrinking and fade out. u decreases from 0.6 to 0.
-        const horizontalProgress = u / 0.6; // normalize 0-1 over second phase
-        width = startWidth * horizontalProgress;
-        height = 2;
-        opacity = horizontalProgress; // fade out linearly
+        // Phase 2: horizontal shrink.
+        // u goes from 0.35 down to 0; map to horizontalProgress from 1 to 0.
+        const horizontalProgress = u / 0.35;
+        width = targetWidth * horizontalProgress;
+        height = THIN_HEIGHT;
+        opacity = horizontalProgress;
       }
-      
       return `
         width: ${width}px;
         height: ${height}px;
@@ -180,6 +186,7 @@ onDestroy(() => {
   }
 });
 
+
 </script>
 
 {#if props.project}
@@ -195,7 +202,7 @@ onDestroy(() => {
     <div
       class="absolute inset-0 bg-black/70"
       onclick={() => props.onClose()}
-      onkeydown={(e) => e.key === "Enter" && !props.isClosing && props.onClose()}
+      onkeydown={(e) => e.key === "Enter" && props.onClose()}
       tabindex="0"
       role="button"
       aria-label="Close modal"
@@ -206,11 +213,13 @@ onDestroy(() => {
       bind:this={modalElement}
       class="relative w-full max-w-5xl h-[90vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden flex flex-col modal-container"
       in:expandAnimation={{ duration: 1000 }}
+      out:shrinkAnimation={{ duration: 1000 }}
+      onoutroend={() => props.onClose()}
     >
       <!-- Close button -->
       <button
         class="absolute right-4 top-4 z-10 rounded-full bg-white/80 p-2 text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-700"
-        onclick={() => props.onClose}
+        onclick={() => props.onClose()}
         aria-label="Close modal"
       >
         <svg
