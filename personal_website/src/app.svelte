@@ -3,6 +3,7 @@
   import PreviewPanel from "./previewPanel.svelte"
   import ProjectCarousel from "./projectCarousel.svelte"
   import ProjectModal from "./projectModal.svelte"
+  import Audio from "./audioControls.svelte"
   import { projects } from "./projects"
 
   import type { Project } from "./types"
@@ -48,6 +49,7 @@
 
   // Lifecycle
   import { onMount, onDestroy } from "svelte"
+    import AudioControls from "./audioControls.svelte"
 
   onMount(() => {
     window.addEventListener("keydown", handleKeydown)
@@ -78,8 +80,9 @@
 <svelte:window on:keydown={handleKeydown} />
 
 <main
-  class="flex min-h-screen flex-col items-center overflow-hidden bg-gray-700 p-4"
+  class="flex min-h-screen flex-col items-center overflow-hidden bg-gray-700 p-6"
 >
+  <Audio/>
   <div class="relative w-full max-w-4xl flex-1">
     <PreviewPanel {hoveredProject} />
     <ProjectCarousel

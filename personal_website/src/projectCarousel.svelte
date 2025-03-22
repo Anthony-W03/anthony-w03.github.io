@@ -219,7 +219,7 @@
 <!--onmouseleave={()=>!isTransitioning && onProjectHover(projects[currentIndex])}-->
 <div class="carousel-container mb-8 mt-auto w-full">
   <div class="carousel-content">
-    <div class="mb-4 flex items-center justify-between">
+    <div class="flex items-center justify-between">
       <button
         class="carousel-nav-btn z-10 rounded-full bg-green-700 p-3 text-white shadow-lg transition-colors duration-200 hover:bg-green-600"
         onclick={prevProject}
@@ -243,7 +243,7 @@
       </button>
 
       <div
-        class="carousel-items relative mx-4 h-[160px] flex-1 overflow-hidden"
+        class="carousel-items relative mx-4 h-[200px] flex-1 overflow-hidden"
       >
         <div
           class="carousel-track absolute inset-0 flex items-center justify-center"
@@ -412,7 +412,7 @@
       </button>
     </div>
 
-    <div class="carousel-indicators mt-4 flex justify-center space-x-2">
+    <div class="carousel-indicators flex justify-center space-x-2">
       {#each projects as _, i}
         <button
           class="h-2 w-8 rounded-full transition-colors duration-200 {i ===

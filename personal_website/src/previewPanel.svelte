@@ -7,7 +7,7 @@
 </script>
 
 <div
-  class="mb-8 flex h-[400px] w-full flex-col rounded-lg bg-gray-800 p-6 transition-all duration-300"
+  class="mb-8 mt-12 flex h-60% w-full flex-col rounded-lg bg-gray-800 p-6 transition-all duration-300"
 >
   <div class="relative h-full w-full">
     {#if hoveredProject}

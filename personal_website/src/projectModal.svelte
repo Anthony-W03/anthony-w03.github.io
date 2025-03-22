@@ -84,6 +84,7 @@
     // Store target dimensions once the element is laid out.
     const targetWidth = node.offsetWidth;
     const targetHeight = node.offsetHeight;
+    const THIN_HEIGHT = 12
     console.log("domain expanded")
     
   return {
@@ -92,16 +93,16 @@
     css: (t: number) => {
       let width: number, height: number;
 
-      if (t < 0.4) {
+      if (t < 0.35) {
         // Phase 1: animate the width from 0 to full, height is a thin line.
         const horizontalProgress = t / 0.65;
         width = targetWidth * horizontalProgress;
-        height = 12; // a very thin horizontal line
+        height = THIN_HEIGHT; // a very thin horizontal line
       } else {
         // Phase 2: width is fixed; height grows from a thin line to full height.
         const verticalProgress = (t - 0.65) / 0.35;
         width = targetWidth;
-        height = 12 + (targetHeight - 12) * verticalProgress;
+        height = THIN_HEIGHT + (targetHeight - THIN_HEIGHT) * verticalProgress;
       }
 
       // Only animate dimensions (and optionally opacity).
@@ -213,7 +214,6 @@ onDestroy(() => {
       bind:this={modalElement}
       class="relative w-full max-w-5xl h-[90vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden flex flex-col modal-container"
       in:expandAnimation={{ duration: 1000 }}
-      out:shrinkAnimation={{ duration: 1000 }}
       onoutroend={() => props.onClose()}
     >
       <!-- Close button -->
