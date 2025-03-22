@@ -17,12 +17,12 @@
   let currentImageIndex: number = $state(0)
 
   const projectOpenAudio: HTMLAudioElement = new Audio(
-    "src/media/audio/modalOpen.wav"
+    "/media/audio/modalOpen.wav"
   )
   projectOpenAudio.volume = 0.05
 
   const projectCloseAudio: HTMLAudioElement = new Audio(
-    "src/media/audio/modalClose.wav"
+    "/media/audio/modalClose.wav"
   )
   projectCloseAudio.volume = 0.05
 

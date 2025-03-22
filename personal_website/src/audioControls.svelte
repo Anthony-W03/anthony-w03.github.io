@@ -2,16 +2,16 @@
   import { sfx } from "./store.svelte"
   import { onMount, onDestroy } from "svelte"
 
-  const bgIcon = "src/media/images/backgroundmusic.svg"
-  const sfxIcon = "src/media/images/sfx.svg"
-  const mutedIcon = "src/media/images/mute.svg"
+  const bgIcon = "/media/images/backgroundmusic.svg"
+  const sfxIcon = "/media/images/sfx.svg"
+  const mutedIcon = "/media/images/mute.svg"
 
   // Reactive variables for mute states.
   let isBackgroundMuted = $state(true)
 
   // Reference to the audio element.
   const bgAudio: HTMLAudioElement = new Audio(
-    "src/media/audio/backgroundMusic.mp3"
+    "/media/audio/backgroundMusic.mp3"
   )
   bgAudio.volume = 0.2
   bgAudio.loop = true

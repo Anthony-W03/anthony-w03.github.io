@@ -24,7 +24,7 @@
   let visualFocusIndex = $state(0)
 
   const projectSelectAudio: HTMLAudioElement = new Audio(
-    "src/media/audio/projectSelect.mp3"
+    "/media/audio/projectSelect.mp3"
   )
   projectSelectAudio.volume = 0.05
 
