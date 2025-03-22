@@ -1,68 +1,86 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { sfx } from "./store.svelte"
+  import { onMount, onDestroy } from "svelte"
+
+  const bgIcon = "src/media/images/backgroundmusic.svg"
+  const sfxIcon = "src/media/images/sfx.svg"
+  const mutedIcon = "src/media/images/mute.svg"
 
   // Reactive variables for mute states.
-  let isBackgroundMuted = $state(false);
-  let isSfxMuted = $state(false);
+  let isBackgroundMuted = $state(true)
 
   // Reference to the audio element.
-  let bgAudio: HTMLAudioElement;
-
-  // On component mount, assign the audio element.
-  onMount(() => {
-    bgAudio = new Audio("/media/audio/background.mp3");
-    // Optionally, start playing immediately (with user interaction, autoplay
-    // policies may require a click)
-    // bgAudio.loop = true;
-    // bgAudio.play();
-  });
+  const bgAudio: HTMLAudioElement = new Audio(
+    "src/media/audio/backgroundMusic.mp3"
+  )
+  bgAudio.volume = 0.2
+  bgAudio.loop = true
 
   function toggleBackground() {
-    isBackgroundMuted = !isBackgroundMuted;
+    isBackgroundMuted = !isBackgroundMuted
     if (bgAudio) {
-      bgAudio.muted = isBackgroundMuted;
+      bgAudio.muted = isBackgroundMuted
+
+      if (!isBackgroundMuted) {
+        bgAudio.play().catch((error) => {
+          console.error("Playback failed:", error)
+        })
+      } else {
+        bgAudio.pause()
+      }
     }
   }
 
   function toggleSfx() {
-    isSfxMuted = !isSfxMuted;
-    // Here you would control your SFX audio logic.
-    // For example, if you have an SFX audio element in your DOM:
-    // const sfxAudio = document.getElementById("sfx-audio") as HTMLAudioElement;
-    // if (sfxAudio) sfxAudio.muted = isSfxMuted;
+    sfx.sfxMuted = !sfx.sfxMuted
   }
 
-  // Paths for your SVG icons (located in public/media/svgs)
-  const bgIcon = "./media/images/backgroundmusic.svg";
-  const sfxIcon = "./media/images/sfx.svg";
-  const mutedIcon = "./media/images/mute.svg";
+  function handleKeydown(event: KeyboardEvent) {
+    console.log("Key pressed:", event.key)
+
+    if (event.key === "m" || event.key === "M") {
+      toggleBackground()
+      toggleSfx()
+    } else if (event.key === "b" || event.key === "B") {
+      toggleBackground()
+    } else if (event.key === "n" || event.key === "N") {
+      toggleSfx()
+    }
+  }
+
+  onMount(() => {
+    document.addEventListener("keydown", handleKeydown)
+    return () => {
+      document.removeEventListener("keydown", handleKeydown)
+    }
+  })
 </script>
 
 <!-- Container for the buttons in the top-left, arranged horizontally -->
-<div class="absolute top-4 left-4 flex flex-row gap-2 z-50">
+<div class="absolute left-4 top-4 z-50 flex flex-row gap-2">
   <!-- Background Music Toggle Button -->
   <button
     onclick={toggleBackground}
-    class="w-10 h-10 rounded-full bg-blue-500 hover:bg-blue-600 flex items-center justify-center transition"
+    class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 transition hover:bg-blue-600"
     aria-label="Toggle Background Music"
   >
     {#if isBackgroundMuted}
-      <img src={mutedIcon} alt="Background Muted" class="w-6 h-6" />
+      <img src={mutedIcon} alt="Background Muted" class="h-6 w-6" />
     {:else}
-      <img src={bgIcon} alt="Background Unmuted" class="w-6 h-6" />
+      <img src={bgIcon} alt="Background Unmuted" class="h-6 w-6" />
     {/if}
   </button>
 
   <!-- SFX Toggle Button -->
   <button
     onclick={toggleSfx}
-    class="w-10 h-10 rounded-full bg-green-500 hover:bg-green-600 flex items-center justify-center transition"
+    class="flex h-10 w-10 items-center justify-center rounded-full bg-green-500 transition hover:bg-green-600"
     aria-label="Toggle SFX"
   >
-    {#if isSfxMuted}
-      <img src={mutedIcon} alt="SFX Muted" class="w-6 h-6" />
+    {#if sfx.sfxMuted}
+      <img src={mutedIcon} alt="SFX Muted" class="h-6 w-6" />
     {:else}
-      <img src={sfxIcon} alt="SFX Unmuted" class="w-6 h-6" />
+      <img src={sfxIcon} alt="SFX Unmuted" class="h-6 w-6" />
     {/if}
   </button>
 </div>

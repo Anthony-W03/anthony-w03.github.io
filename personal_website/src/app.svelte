@@ -49,7 +49,7 @@
 
   // Lifecycle
   import { onMount, onDestroy } from "svelte"
-    import AudioControls from "./audioControls.svelte"
+  import AudioControls from "./audioControls.svelte"
 
   onMount(() => {
     window.addEventListener("keydown", handleKeydown)
@@ -73,7 +73,7 @@
 
   function closeModal() {
     console.log(selectedProject + " is closing")
-    selectedProject = null;
+    selectedProject = null
   }
 </script>
 
@@ -82,8 +82,8 @@
 <main
   class="flex min-h-screen flex-col items-center overflow-hidden bg-gray-700 p-6"
 >
-  <Audio/>
-  <div class="relative w-full max-w-4xl flex-1">
+  <Audio />
+  <div class="relative w-full max-w-5xl flex-1">
     <PreviewPanel {hoveredProject} />
     <ProjectCarousel
       {projects}
@@ -94,10 +94,7 @@
     />
   </div>
 
-  <ProjectModal 
-    project={selectedProject}
-    onClose={closeModal}
-  />
+  <ProjectModal project={selectedProject} onClose={closeModal} />
 </main>
 
 <style lang="postcss">

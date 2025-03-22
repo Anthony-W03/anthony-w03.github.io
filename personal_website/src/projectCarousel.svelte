@@ -2,6 +2,7 @@
 <script lang="ts">
   import { cubicOut } from "svelte/easing"
   import type { Project } from "./types"
+  import { sfx } from "./store.svelte"
 
   const { projects, hoveredProject, onProjectHover, onProjectSelect } = $props<{
     projects: Project[]
@@ -22,6 +23,11 @@
   // Track which project is visually in focus during animation
   let visualFocusIndex = $state(0)
 
+  const projectSelectAudio: HTMLAudioElement = new Audio(
+    "src/media/audio/projectSelect.mp3"
+  )
+  projectSelectAudio.volume = 0.05
+
   // Initialize positions
   $effect(() => {
     resetAnimationState()
@@ -35,10 +41,20 @@
     animationDirection = 0
   }
 
+  function playProjectSelectSFX() {
+    if (!sfx.sfxMuted && projectSelectAudio) {
+      projectSelectAudio.currentTime = 0
+      projectSelectAudio.play().catch((error) => {
+        console.error("Playback failed:", error)
+      })
+    }
+  }
+
   async function nextProject() {
     if (isTransitioning) return //play around with this later
     isTransitioning = true
     animationDirection = 1
+    playProjectSelectSFX()
 
     // Start with current values
     let startPositions = [...positions]
@@ -104,6 +120,7 @@
     if (isTransitioning) return
     isTransitioning = true
     animationDirection = -1
+    playProjectSelectSFX()
 
     // Start with current values
     let startPositions = [...positions]

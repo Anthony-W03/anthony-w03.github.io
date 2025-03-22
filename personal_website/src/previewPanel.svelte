@@ -7,7 +7,7 @@
 </script>
 
 <div
-  class="mb-8 mt-12 flex h-60% w-full flex-col rounded-lg bg-gray-800 p-6 transition-all duration-300"
+  class=" mt-[5vh] flex h-[55vh] w-full flex-col rounded-lg bg-gray-800 p-6 transition-all duration-300"
 >
   <div class="relative h-full w-full">
     {#if hoveredProject}
@@ -16,11 +16,11 @@
         in:fade={{ duration: 200 }}
         out:fade={{ duration: 50 }}
       >
-        <div class="space-y-4">
+        <div class="absolute bottom-1/3 space-y-4">
           <img
             src={hoveredProject.imageUrl}
             alt={hoveredProject.title}
-            class="h-48 w-full rounded-lg object-cover"
+            class="h-1/2 w-full rounded-lg object-cover"
           />
           <h2 class="text-2xl font-bold text-white">{hoveredProject.title}</h2>
           <p class="text-gray-300">{hoveredProject.description}</p>

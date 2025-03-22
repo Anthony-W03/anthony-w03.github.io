@@ -2,9 +2,10 @@
 <script lang="ts">
   import { onMount, onDestroy } from "svelte"
   import { fade, fly } from "svelte/transition"
-  import { tick } from 'svelte';
+  import { tick } from "svelte"
   import { cubicOut } from "svelte/easing"
   import type { Project } from "./types"
+  import { sfx } from "./store.svelte"
 
   const props = $props<{
     project: Project | null
@@ -14,7 +15,16 @@
   // State for the modal element and gallery
   let modalElement: HTMLDivElement | null = $state(null)
   let currentImageIndex: number = $state(0)
-  let localVisible:boolean = $state(true)
+
+  const projectOpenAudio: HTMLAudioElement = new Audio(
+    "src/media/audio/modalOpen.wav"
+  )
+  projectOpenAudio.volume = 0.05
+
+  const projectCloseAudio: HTMLAudioElement = new Audio(
+    "src/media/audio/modalClose.wav"
+  )
+  projectCloseAudio.volume = 0.05
 
   // Function to handle gallery navigation
   function nextImage() {
@@ -39,18 +49,17 @@
     }
   })
 
-
   // Handle click outside
   function handleOutsideClick(event: MouseEvent) {
     if (modalElement && !modalElement.contains(event.target as Node)) {
-      props.onClose();
+      props.onClose()
     }
   }
 
   // Handle escape key
   function handleKeydown(event: KeyboardEvent) {
     if (event.key === "Escape") {
-        props.onClose()
+      props.onClose()
     } else if (
       event.key === "ArrowLeft" &&
       props.project?.galleryImages?.length
@@ -76,80 +85,97 @@
     document.body.style.overflow = ""
   })
 
+  function playOpenProjectSFX() {
+    if (!sfx.sfxMuted && projectOpenAudio) {
+      projectOpenAudio.currentTime = 0
+      projectOpenAudio.play().catch((error) => {
+        console.error("Playback failed:", error)
+      })
+    }
+  }
+
+  function playCloseProjectSFX() {
+    if (!sfx.sfxMuted && projectCloseAudio) {
+      projectCloseAudio.currentTime = 0
+      projectCloseAudio.play().catch((error) => {
+        console.error("Playback failed:", error)
+      })
+    }
+  }
+
   // Custom animations
   function expandAnimation(
-  node: HTMLElement,
-  { duration = 1200, easing = cubicOut }
-) {
+    node: HTMLElement,
+    { duration = 1200, easing = cubicOut }
+  ) {
     // Store target dimensions once the element is laid out.
-    const targetWidth = node.offsetWidth;
-    const targetHeight = node.offsetHeight;
+    const targetWidth = node.offsetWidth
+    const targetHeight = node.offsetHeight
     const THIN_HEIGHT = 12
+    playOpenProjectSFX()
     console.log("domain expanded")
-    
-  return {
-    duration,
-    easing,
-    css: (t: number) => {
-      let width: number, height: number;
 
-      if (t < 0.35) {
-        // Phase 1: animate the width from 0 to full, height is a thin line.
-        const horizontalProgress = t / 0.65;
-        width = targetWidth * horizontalProgress;
-        height = THIN_HEIGHT; // a very thin horizontal line
-      } else {
-        // Phase 2: width is fixed; height grows from a thin line to full height.
-        const verticalProgress = (t - 0.65) / 0.35;
-        width = targetWidth;
-        height = THIN_HEIGHT + (targetHeight - THIN_HEIGHT) * verticalProgress;
-      }
+    return {
+      duration,
+      easing,
+      css: (t: number) => {
+        let width: number, height: number
 
-      // Only animate dimensions (and optionally opacity).
-      return `
+        if (t < 0.35) {
+          // Phase 1: animate the width from 0 to full, height is a thin line.
+          const horizontalProgress = t / 0.65
+          width = targetWidth * horizontalProgress
+          height = THIN_HEIGHT // a very thin horizontal line
+        } else {
+          // Phase 2: width is fixed; height grows from a thin line to full height.
+          const verticalProgress = (t - 0.65) / 0.35
+          width = targetWidth
+          height = THIN_HEIGHT + (targetHeight - THIN_HEIGHT) * verticalProgress
+        }
+
+        // Only animate dimensions (and optionally opacity).
+        return `
         width: ${width}px;
         height: ${height}px;
         opacity: 1;
-      `;
+      `
+      },
     }
-  };
-}
+  }
 
+  export function shrinkAnimation(
+    node: HTMLElement,
+    { duration = 1200, easing = cubicOut }
+  ) {
+    const targetWidth = node.offsetWidth
+    const targetHeight = node.offsetHeight
+    const THIN_HEIGHT = 12 // use the same thin value
+    console.log("smol")
 
-
-export function shrinkAnimation(
-  node: HTMLElement,
-  { duration = 1200, easing = cubicOut }
-) {
-  const targetWidth = node.offsetWidth;
-  const targetHeight = node.offsetHeight;
-  const THIN_HEIGHT = 12; // use the same thin value
-  console.log("smol")
-
-  return {
-    duration,
-    easing,
-    css: (t: number, u: number) => {
-      // For out transitions, u is 1 - t.
-      let width: number, height: number, opacity: number;
-      if (u > 0.35) {
-        // Phase 1: vertical shrink
-        // u goes from 1 to 0.35; map that to a verticalProgress from 1 to 0.
-        const verticalProgress = (u - 0.35) / 0.65;
-        // At u = 1, verticalProgress = 1 → height = THIN_HEIGHT + (targetHeight - THIN_HEIGHT) * 1 = targetHeight.
-        // At u = 0.35, verticalProgress = 0 → height = THIN_HEIGHT.
-        height = THIN_HEIGHT + (targetHeight - THIN_HEIGHT) * verticalProgress;
-        width = targetWidth;
-        opacity = 1;
-      } else {
-        // Phase 2: horizontal shrink.
-        // u goes from 0.35 down to 0; map to horizontalProgress from 1 to 0.
-        const horizontalProgress = u / 0.35;
-        width = targetWidth * horizontalProgress;
-        height = THIN_HEIGHT;
-        opacity = horizontalProgress;
-      }
-      return `
+    return {
+      duration,
+      easing,
+      css: (t: number, u: number) => {
+        // For out transitions, u is 1 - t.
+        let width: number, height: number, opacity: number
+        if (u > 0.35) {
+          // Phase 1: vertical shrink
+          // u goes from 1 to 0.35; map that to a verticalProgress from 1 to 0.
+          const verticalProgress = (u - 0.35) / 0.65
+          // At u = 1, verticalProgress = 1 → height = THIN_HEIGHT + (targetHeight - THIN_HEIGHT) * 1 = targetHeight.
+          // At u = 0.35, verticalProgress = 0 → height = THIN_HEIGHT.
+          height = THIN_HEIGHT + (targetHeight - THIN_HEIGHT) * verticalProgress
+          width = targetWidth
+          opacity = 1
+        } else {
+          // Phase 2: horizontal shrink.
+          // u goes from 0.35 down to 0; map to horizontalProgress from 1 to 0.
+          const horizontalProgress = u / 0.35
+          width = targetWidth * horizontalProgress
+          height = THIN_HEIGHT
+          opacity = horizontalProgress
+        }
+        return `
         width: ${width}px;
         height: ${height}px;
         opacity: ${opacity};
@@ -158,36 +184,34 @@ export function shrinkAnimation(
         left: 50%;
         transform: translate(-${width / 2}px, -${height / 2}px);
         overflow: hidden;
-      `;
+      `
+      },
     }
-  };
-}
-
-
-// Show content after animation completes
-let animationComplete = $state(false);
-
-$effect(() => {
-  if (props.project) {
-    animationComplete = false;
-    tick().then(() => {
-      setTimeout(() => {
-        animationComplete = true;
-        if (modalElement) {
-          modalElement.classList.add('animation-complete');
-        }
-      }, 600); // Match this to your animation duration
-    });
   }
-});
 
-onDestroy(() => {
-  if (modalElement) {
-    modalElement.classList.remove('animation-complete');
-  }
-});
+  // Show content after animation completes
+  let animationComplete = $state(false)
 
+  $effect(() => {
+    if (props.project) {
+      animationComplete = false
+      tick().then(() => {
+        setTimeout(() => {
+          animationComplete = true
+          if (modalElement) {
+            modalElement.classList.add("animation-complete")
+          }
+        }, 600) // Match this to your animation duration
+      })
+    }
+  })
 
+  onDestroy(() => {
+    if (modalElement) {
+      modalElement.classList.remove("animation-complete")
+      playCloseProjectSFX()
+    }
+  })
 </script>
 
 {#if props.project}
@@ -212,12 +236,37 @@ onDestroy(() => {
     <!-- Modal container -->
     <div
       bind:this={modalElement}
-      class="relative w-full max-w-5xl h-[90vh] bg-white dark:bg-gray-800 rounded-lg shadow-2xl overflow-hidden flex flex-col modal-container"
+      class="modal-container relative flex h-[90vh] w-full max-w-5xl flex-col overflow-hidden rounded-lg bg-white shadow-2xl dark:bg-gray-800"
       in:expandAnimation={{ duration: 1000 }}
       onoutroend={() => props.onClose()}
     >
       <!-- Close button -->
-      <button
+
+      <div class="absolute right-4 top-4 z-10 flex flex-col items-center">
+        <button
+          class="rounded-full bg-white/80 p-2 text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-700"
+          onclick={() => props.onClose()}
+          aria-label="Close modal"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
+        <span class="text-s text-gray-500 dark:text-gray-400">esc</span>
+      </div>
+
+      <!-- <button
         class="absolute right-4 top-4 z-10 rounded-full bg-white/80 p-2 text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-700"
         onclick={() => props.onClose()}
         aria-label="Close modal"
@@ -236,10 +285,10 @@ onDestroy(() => {
             d="M6 18L18 6M6 6l12 12"
           />
         </svg>
-      </button>
+      </button> -->
 
       <!-- Scrollable content container -->
-      <div class="flex-grow overflow-y-auto modal-content">
+      <div class="modal-content flex-grow overflow-y-auto">
         <!-- Image gallery -->
         <div class="relative h-72 w-full bg-gray-900 sm:h-80 md:h-96">
           {#if props.project.galleryImages.length > 0}
@@ -504,49 +553,49 @@ onDestroy(() => {
 {/if}
 
 <style>
-    /* Custom scrollbar styling */
-    .modal-content {
-      scrollbar-width: thin; /* Firefox */
-      scrollbar-color: rgba(156, 163, 175, 0.5) transparent; /* Firefox */
-    }
-  
-    /* For Webkit browsers (Chrome, Safari, etc.) */
-    .modal-content::-webkit-scrollbar {
-      width: 8px;
-    }
-  
-    .modal-content::-webkit-scrollbar-track {
-      background: transparent;
-    }
-  
-    .modal-content::-webkit-scrollbar-thumb {
-      background-color: rgba(156, 163, 175, 0.5);
-      border-radius: 20px;
-    }
-  
-    /* For dark mode */
-    :global(.dark) .modal-content {
-      scrollbar-color: rgba(75, 85, 99, 0.5) transparent; /* Firefox */
-    }
-  
-    :global(.dark) .modal-content::-webkit-scrollbar-thumb {
-      background-color: rgba(75, 85, 99, 0.5);
-    }
+  /* Custom scrollbar styling */
+  .modal-content {
+    scrollbar-width: thin; /* Firefox */
+    scrollbar-color: rgba(156, 163, 175, 0.5) transparent; /* Firefox */
+  }
 
-    /* Animation container styles */
+  /* For Webkit browsers (Chrome, Safari, etc.) */
+  .modal-content::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .modal-content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .modal-content::-webkit-scrollbar-thumb {
+    background-color: rgba(156, 163, 175, 0.5);
+    border-radius: 20px;
+  }
+
+  /* For dark mode */
+  :global(.dark) .modal-content {
+    scrollbar-color: rgba(75, 85, 99, 0.5) transparent; /* Firefox */
+  }
+
+  :global(.dark) .modal-content::-webkit-scrollbar-thumb {
+    background-color: rgba(75, 85, 99, 0.5);
+  }
+
+  /* Animation container styles */
   .modal-container {
     transform-origin: center center;
     will-change: transform, width, height, opacity;
   }
-  
+
   /* Hide content during animation */
   .modal-container:not(.animation-complete) > * {
     opacity: 0;
   }
-  
+
   /* Show content when animation is complete */
   /* .modal-container.animation-complete > * {
     opacity: 1;
     transition: opacity 0.2s ease-out;
   } */
-  </style>
+</style>
