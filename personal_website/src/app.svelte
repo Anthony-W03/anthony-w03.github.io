@@ -24,7 +24,7 @@
     if (selectedProject) return
 
     // Prevent default behavior for arrow keys to avoid page scrolling
-    if (["ArrowLeft", "ArrowRight", "Enter"].includes(event.key)) {
+    if (["ArrowLeft", "ArrowRight", "Enter", " "].includes(event.key)) {
       event.preventDefault()
     }
 
@@ -37,6 +37,7 @@
         // Navigate to next project
         carouselComponent?.next()
         break
+      case " ":
       case "Enter":
         if (hoveredProject) {
           selectedProject = hoveredProject

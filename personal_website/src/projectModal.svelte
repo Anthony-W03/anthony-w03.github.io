@@ -58,18 +58,22 @@
 
   // Handle escape key
   function handleKeydown(event: KeyboardEvent) {
-    if (event.key === "Escape") {
-      props.onClose()
-    } else if (
-      event.key === "ArrowLeft" &&
-      props.project?.galleryImages?.length
-    ) {
-      prevImage()
-    } else if (
-      event.key === "ArrowRight" &&
-      props.project?.galleryImages?.length
-    ) {
-      nextImage()
+    switch (event.key) {
+      case "Escape":
+      case "x":
+      case "X":
+        props.onClose()
+        break
+      case "ArrowLeft":
+        if (props.project?.galleryImages?.length) {
+          prevImage()
+        }
+        break
+      case "ArrowRight":
+        if (props.project?.galleryImages?.length) {
+          nextImage()
+        }
+        break
     }
   }
 
