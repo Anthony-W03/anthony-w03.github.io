@@ -14,6 +14,7 @@ export interface Project {
   funfacts?: string
   technologies?: string[]
   features?: string[]
+  sources?: string[]
   demoUrl?: string
   githubUrl?: string
   linkedinUrl?: string

@@ -118,6 +118,7 @@ export const projects: Project[] = [
   {
     id: "5",
     title: "Personal Website",
+    imageUrl: "/media/images/projectImages/PersonalWebsite.png",
     description: "The website you're viewing right now!",
     detailedDescription:
       "I wanted to make a website to display my different projects and to test my WebDev skills. I specifically chose to use Svelte for this project as I had only had experience with React before and I wanted to understand another web framework.",
@@ -135,13 +136,15 @@ export const projects: Project[] = [
     ],
     githubUrl: "https://github.com/Anthony-W03/anthony-w03.github.io",
     galleryImages: [],
+    sources: [
+      "Background Music: https://soundcloud.com/superiorsnivys/castelia-city-lo-fi-remix-anecdoche?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
+    ],
   },
   {
     id: "6",
     title: "Lincoln Center Editions",
     description: "Elevating Lincoln Center's Editions website",
-    imageUrl: "",
-    path: "",
+    imageUrl: "/media/images/projectImages/LincolnCenterNew.png",
     detailedDescription:
       "During my internship at Lincoln Center, one of my big tasks was facilitating the complete revamp of the Lincoln Center Editions website. Due to it's outdated look and confusing documentation, it had fallen out of repair and gave the team behind it headaches. I worked alongside 2 other interns to update the website, create documentation behind the different internal processes, and clear up confusion for the team that uses the website.",
     problem:
@@ -152,7 +155,10 @@ export const projects: Project[] = [
       "Learning Shopify well enough to create meaningful documentation was a good challenge that helped my learn alot. Thankfully our clients ended up very satisfied with our work.",
     technologies: ["Shopify", "CSS"],
     demoUrl: "https://art.lincolncenter.org/",
-    galleryImages: [],
+    galleryImages: [
+      "/media/images/projectImages/LincolnCenterNew.png",
+      "/media/images/projectImages/LincolnCenterOld.png",
+    ],
   },
 ]
 
