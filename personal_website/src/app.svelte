@@ -81,7 +81,7 @@
 <svelte:window on:keydown={handleKeydown} />
 
 <main
-  class="flex min-h-screen flex-col items-center overflow-hidden bg-slate-700 p-6"
+  class="flex min-h-screen flex-col items-center overflow-hidden bg-slate-700 p-4"
 >
   <Audio />
   <div class="relative w-full max-w-4xl flex-1">

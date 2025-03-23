@@ -300,6 +300,7 @@
             />
 
             <!-- Gallery navigation buttons -->
+             {#if props.project.galleryImages.length > 1}
             <button
               class="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
               onclick={prevImage}
@@ -341,6 +342,7 @@
                 />
               </svg>
             </button>
+            
 
             <!-- Gallery indicator -->
             <div
@@ -356,6 +358,7 @@
                 ></button>
               {/each}
             </div>
+            {/if}
           {:else}
             <!-- Fallback to main image if no gallery -->
             <img
@@ -382,20 +385,39 @@
           <!-- Project sections -->
           <div class="space-y-8">
             {#if props.project.detailedDescription}
-              <section>
-                <h3
-                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
-                >
-                  About this project
-                </h3>
-                <div class="prose prose-lg dark:prose-invert max-w-none">
-                  <p class="text-gray-700 dark:text-gray-300">
-                    {props.project.detailedDescription}
-                  </p>
-                </div>
-              </section>
-            {/if}
-
+            <section>
+              <h3
+              class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
+              >
+              About this project
+            </h3>
+            <div class="prose prose-lg dark:prose-invert max-w-none">
+              <p class="text-gray-700 dark:text-gray-300">
+                {props.project.detailedDescription}
+              </p>
+            </div>
+          </section>
+          {/if}
+          
+          {#if props.project.technologies && props.project.technologies.length > 0}
+            <section>
+              <h3
+                class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
+              >
+                Technologies Used
+              </h3>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {#each props.project.technologies as tech}
+                  <span
+                    class="rounded-full bg-gray-200 px-3 py-1.5 text-sm font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+                  >
+                    {tech}
+                  </span>
+                {/each}
+              </div>
+            </section>
+          {/if}
+          
             {#if props.project.problem}
               <section>
                 <h3
@@ -520,24 +542,6 @@
               </section>
             {/if}
 
-            {#if props.project.technologies && props.project.technologies.length > 0}
-              <section>
-                <h3
-                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
-                >
-                  Technologies Used
-                </h3>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  {#each props.project.technologies as tech}
-                    <span
-                      class="rounded-full bg-gray-200 px-3 py-1.5 text-sm font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-200"
-                    >
-                      {tech}
-                    </span>
-                  {/each}
-                </div>
-              </section>
-            {/if}
           </div>
 
           <!-- Project links -->

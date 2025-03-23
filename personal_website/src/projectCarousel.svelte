@@ -234,14 +234,13 @@
 </script>
 
 <!--onmouseleave={()=>!isTransitioning && onProjectHover(projects[currentIndex])}-->
-<div class="carousel-container mb-8 mt-auto w-full">
+<div class="carousel-container mb-1 mt-auto w-full">
   <div class="carousel-content">
     <div class="flex items-center justify-between">
       <button
         class="carousel-nav-btn z-10 rounded-full bg-green-700 p-3 text-white shadow-lg transition-colors duration-200 hover:bg-green-600"
         onclick={prevProject}
         aria-label="Previous project"
-        disabled={isTransitioning}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -260,7 +259,7 @@
       </button>
 
       <div
-        class="carousel-items relative mx-4 h-[200px] flex-1 overflow-hidden"
+        class="carousel-items relative mx-4 h-[20vh] flex-1 overflow-hidden"
       >
         <div
           class="carousel-track absolute inset-0 flex items-center justify-center"
@@ -274,7 +273,7 @@
               <button
                 class="hexagon-btn relative
                         {visualFocusIndex === getProjectIndex(-2)
-                  ? 'bg-green-500'
+                  ? 'bg-green-700'
                   : 'bg-green-700 hover:bg-green-600'}"
               >
                 <div
@@ -298,7 +297,7 @@
             <button
               class="hexagon-btn relative
                       {visualFocusIndex === getProjectIndex(-1)
-                ? 'bg-green-500'
+                ? 'bg-green-700'
                 : 'bg-green-700 hover:bg-green-600'}"
               onmouseenter={() =>
                 !isTransitioning &&
@@ -327,7 +326,7 @@
             ]}); opacity: {opacities[positions.length > 3 ? 2 : 1]};"
           >
             <button
-              class="hexagon-btn relative
+              class="hexagon-btn relative glow
                       {visualFocusIndex === currentIndex
                 ? 'bg-green-500'
                 : 'bg-green-700 hover:bg-green-600'}"
@@ -360,7 +359,7 @@
             <button
               class="hexagon-btn relative
                       {visualFocusIndex === getProjectIndex(1)
-                ? 'bg-green-500'
+                ? 'bg-green-700'
                 : 'bg-green-700 hover:bg-green-600'}"
               onmouseenter={() =>
                 !isTransitioning &&
@@ -392,7 +391,7 @@
               <button
                 class="hexagon-btn relative
                         {visualFocusIndex === getProjectIndex(2)
-                  ? 'bg-green-500'
+                  ? 'bg-green-700'
                   : 'bg-green-700 hover:bg-green-600'}"
               >
                 <div
@@ -410,7 +409,6 @@
         class="carousel-nav-btn z-10 rounded-full bg-green-700 p-3 text-white shadow-lg transition-colors duration-200 hover:bg-green-600"
         onclick={nextProject}
         aria-label="Next project"
-        disabled={isTransitioning}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -481,8 +479,8 @@
   }
 
   .hexagon-btn {
-    width: 140px;
-    height: 160px;
+    height: 17vh;
+    aspect-ratio: 140 / 160;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     position: relative;
     transition: background-color 0.2s ease;
@@ -503,5 +501,20 @@
 
   .carousel-indicators {
     margin-top: 1rem;
+  }
+
+  @keyframes glow {
+    0%,
+    100% {
+      background-color: #66bb6a; /* Lighter green shade */
+    }
+    50% {
+      background-color: #2e7d32; /* Darker green shade */
+    }
+  }
+
+  /* Add the glow class to apply the animation */
+  .glow {
+    animation: glow 1.5s ease-in-out infinite;
   }
 </style>
