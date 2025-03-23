@@ -5,45 +5,34 @@ export const projects: Project[] = [
   {
     id: "1",
     title: "About Me",
-    description: "A revolutionary project that showcases innovative technology",
-    imageUrl: "/placeholder-image-1.jpg",
+    description: "Hello! I'm Anthony, a software engineer who enjoys hard problems and reducing stress for my team.",
+    imageUrl: "/media/images/projectImages/MePic.jpg",
     path: "/project-alpha",
     detailedDescription:
-      "This project was developed to solve a critical problem in the industry. It leverages cutting-edge technology to provide a seamless user experience while maintaining high performance and scalability.",
-    problem:
-      "Traditional solutions in this space were slow, inefficient, and difficult to use, leading to poor user adoption and wasted resources.",
-    solution:
-      "We designed a modern architecture using microservices and real-time data processing to create a responsive and intuitive platform that addresses all key pain points.",
-    challenges:
-      "The biggest challenge was optimizing performance while handling large datasets. We implemented advanced caching strategies and database optimizations to achieve sub-second response times.",
+      "I'm a Computer Science student at Lafayette College, born and raised in the Bronx. I've been programming since 4th grade in some form or another, so I'm confident in my problem solving skills and analytical thinking. Within teams I adapt to whatever role is needed, whether that be a project manager, designer, or developer. I believe I'm most effective when their's a environment of trust and open communication, and I aim to foster that in every team I'm a part of.",
+    currentFocus:
+      "I'm currently looking for a full-time position as a front-end software engineer, working on a real estate application, and am throwing myself into learning more about AI and its applications.",
+    futurePlans:
+      "I want to get my CAPM and PMP certifications within the next few years and transfer into a Project/Engineering Manager role.",
+    funfacts:
+      "I'm a big Pokemon fan, I've been playing since I was 10 and am looking to make my own fan game in the future. I also love to cook and eat, and I'm always looking for new recipes to try out and restaurants to visit. Huge NBA fan as well, so feel free to talk to me about the league anytime.",
     technologies: [
+      "JavaScript",
+      "Java",
       "React",
-      "Node.js",
-      "TypeScript",
-      "MongoDB",
-      "Docker",
-      "AWS",
+      "Python",
+      "CSS",
     ],
-    features: [
-      "Real-time data visualization",
-      "Collaborative editing",
-      "Advanced search capabilities",
-      "Automated reporting",
-      "Custom workflow automation",
-    ],
-    //demoUrl: "https://demo.example.com/project-a",
-    githubUrl: "https://github.com/yourusername/project-a",
+    linkedinUrl: "https://www.linkedin.com/in/anthony-w03/",
     galleryImages: [
-      "/placeholder-image-1.jpg",
-      "/placeholder-image-2.jpg",
-      "/placeholder-image-3.jpg",
+      "/media/images/projectImages/MyNameIs.png"
     ],
   },
   {
     id: "2",
     title: "Professional Network Visualizer",
     description: "An easier way to map out your professional network",
-    imageUrl: "",
+    imageUrl: "/media/images/projectImages/forceGraph.webp",
     detailedDescription:
       "This tool was the result of a hackathon, where I was in the middle of going down a 5+ person referral chain and I was worrying about following up with one person while reporting back to another. I liked the ability to connect and reach out to a plethora of people through the internet but trying to keep track alongside school and my other responsibilities made me seek out a tool that I didn't find at the time, so I decided to start making one.",
     problem:
@@ -120,7 +109,11 @@ export const projects: Project[] = [
       "It was a fun challenge learning how to interact with the Spotify API and make a little script that I'm reminded of whenever I walk around my floor",
     technologies: ["Python", "Spotipy", "Pillow (Image Processing)"],
     githubUrl: "https://github.com/Anthony-W03/SpotifyCodeGen",
-    galleryImages: [],
+    galleryImages: [
+      "/media/images/projectImages/Spotify_main.png",
+      "media/images/projectImages/Anthony_composite.png",
+      "media/images/projectImages/Pedro_composite.png",
+    ],
   },
   {
     id: "5",

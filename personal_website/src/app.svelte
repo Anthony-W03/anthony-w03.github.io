@@ -81,10 +81,10 @@
 <svelte:window on:keydown={handleKeydown} />
 
 <main
-  class="flex min-h-screen flex-col items-center overflow-hidden bg-gray-700 p-6"
+  class="flex min-h-screen flex-col items-center overflow-hidden bg-slate-700 p-6"
 >
   <Audio />
-  <div class="relative w-full max-w-5xl flex-1">
+  <div class="relative w-full max-w-4xl flex-1">
     <PreviewPanel {hoveredProject} />
     <ProjectCarousel
       {projects}

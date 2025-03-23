@@ -107,7 +107,6 @@
     }
   }
 
-  // Custom animations
   function expandAnimation(
     node: HTMLElement,
     { duration = 1200, easing = cubicOut }
@@ -117,7 +116,6 @@
     const targetHeight = node.offsetHeight
     const THIN_HEIGHT = 12
     playOpenProjectSFX()
-    console.log("domain expanded")
 
     return {
       duration,
@@ -126,18 +124,17 @@
         let width: number, height: number
 
         if (t < 0.35) {
-          // Phase 1: animate the width from 0 to full, height is a thin line.
+          // Step 1: Animate the width from 0 to full
           const horizontalProgress = t / 0.65
           width = targetWidth * horizontalProgress
           height = THIN_HEIGHT // a very thin horizontal line
         } else {
-          // Phase 2: width is fixed; height grows from a thin line to full height.
+          // Step 2: height grows to full height.
           const verticalProgress = (t - 0.65) / 0.35
           width = targetWidth
           height = THIN_HEIGHT + (targetHeight - THIN_HEIGHT) * verticalProgress
         }
 
-        // Only animate dimensions (and optionally opacity).
         return `
         width: ${width}px;
         height: ${height}px;
@@ -294,7 +291,7 @@
       <!-- Scrollable content container -->
       <div class="modal-content flex-grow overflow-y-auto">
         <!-- Image gallery -->
-        <div class="relative h-72 w-full bg-gray-900 sm:h-80 md:h-96">
+        <div class="relative h-72 w-full bg-gray-800 sm:h-80 md:h-96">
           {#if props.project.galleryImages.length > 0}
             <!-- Gallery image -->
             <img
@@ -371,7 +368,7 @@
         </div>
 
         <!-- Project details -->
-        <div class="p-6 md:p-8">
+        <div class="p-6 md:p-8 bg-gray-900">
           <h2
             id="modal-title"
             class="mb-4 text-2xl font-bold text-gray-900 sm:text-3xl dark:text-white"

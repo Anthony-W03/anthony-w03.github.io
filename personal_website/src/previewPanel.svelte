@@ -3,27 +3,30 @@
   import { fade } from "svelte/transition"
   import type { Project } from "./types"
 
-  export let hoveredProject: Project | null
+  const props = $props<{
+    hoveredProject: Project | null
+  }>()
+  
 </script>
 
 <div
   class=" mt-[5vh] flex h-[55vh] w-full flex-col rounded-lg bg-gray-800 p-6 transition-all duration-300"
 >
   <div class="relative h-full w-full">
-    {#if hoveredProject}
-      <div
-        class="h-full overflow-y-auto"
-        in:fade={{ duration: 200 }}
-        out:fade={{ duration: 50 }}
+    {#if props.hoveredProject}
+      <div class="flex h-full flex-col overflow-y-auto rounded-lg pt-4"
+      
       >
-        <div class="absolute bottom-1/3 space-y-4">
-          <img
-            src={hoveredProject.imageUrl}
-            alt={hoveredProject.title}
-            class="h-1/2 w-full rounded-lg object-cover"
-          />
-          <h2 class="text-2xl font-bold text-white">{hoveredProject.title}</h2>
-          <p class="text-gray-300">{hoveredProject.description}</p>
+      <img
+      src={props.hoveredProject.imageUrl}
+      alt={props.hoveredProject.title}
+      class="h-3/4 w-full rounded-lg object-cover"
+      in:fade={{ duration: 800 }}
+      out:fade={{ duration: 50 }}
+        />
+        <div class="h-1/4 space-y-2 p-4">
+          <h2 class="text-2xl font-bold text-white">{props.hoveredProject.title}</h2>
+          <p class="text-gray-300">{props.hoveredProject.description}</p>
         </div>
       </div>
     {:else}
