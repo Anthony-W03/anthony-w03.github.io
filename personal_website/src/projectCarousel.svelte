@@ -433,27 +433,8 @@
           class="h-2 w-8 rounded-full transition-colors duration-200 {i ===
           currentIndex
             ? 'bg-green-500'
-            : 'bg-gray-600 hover:bg-gray-500'}"
-          onclick={async () => {
-            if (isTransitioning || i === currentIndex) return
-
-            const direction = i > currentIndex ? 1 : -1
-            const distance = Math.min(
-              Math.abs(i - currentIndex),
-              projects.length - Math.abs(i - currentIndex)
-            )
-
-            // Determine which animation to use
-            if (direction > 0) {
-              for (let step = 0; step < distance; step++) {
-                await nextProject()
-              }
-            } else {
-              for (let step = 0; step < distance; step++) {
-                await prevProject()
-              }
-            }
-          }}
+            : 'bg-gray-600'}"
+          
           aria-label={`Go to project ${i + 1}`}
         ></button>
       {/each}
@@ -506,10 +487,10 @@
   @keyframes glow {
     0%,
     100% {
-      background-color: #66bb6a; /* Lighter green shade */
+      background-color: #05df72; /* Lighter green shade */
     }
     50% {
-      background-color: #2e7d32; /* Darker green shade */
+      background-color: #00a63e; /* Darker green shade */
     }
   }
 

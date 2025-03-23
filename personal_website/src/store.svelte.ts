@@ -1,4 +1,4 @@
-let sfxMuted: boolean = $state(false)
+let sfxMuted: boolean = $state(true)
 
 export const sfx = {
   get sfxMuted() {

@@ -62,6 +62,7 @@
   <button
     onclick={toggleBackground}
     class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 transition hover:bg-blue-600"
+    title="Toggle Background Music"
     aria-label="Toggle Background Music"
   >
     {#if isBackgroundMuted}
@@ -75,6 +76,7 @@
   <button
     onclick={toggleSfx}
     class="flex h-10 w-10 items-center justify-center rounded-full bg-green-500 transition hover:bg-green-600"
+    title="Toggle SFX"
     aria-label="Toggle SFX"
   >
     {#if sfx.sfxMuted}
