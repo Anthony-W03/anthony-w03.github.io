@@ -269,7 +269,7 @@
             />
           </svg>
         </button>
-        <span class="text-s text-gray-500 dark:text-gray-400">esc</span>
+        <span class="text-s text-white dark:text-gray-400">esc</span>
       </div>
 
       <!-- <button
@@ -380,12 +380,12 @@
         <div class="p-6 md:p-8 bg-gray-900">
           <h2
             id="modal-title"
-            class="mb-4 text-2xl font-bold text-gray-900 sm:text-3xl dark:text-white"
+            class="mb-4 text-2xl font-bold text-white sm:text-3xl dark:text-white"
           >
             {props.project.title}
           </h2>
 
-          <p class="mb-8 text-lg text-gray-700 dark:text-gray-300">
+          <p class="mb-8 text-lg text-white dark:text-white">
             {props.project.description}
           </p>
 
@@ -394,12 +394,12 @@
             {#if props.project.detailedDescription}
             <section>
               <h3
-              class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
+              class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-white dark:border-gray-700 dark:text-white"
               >
               About this project
             </h3>
             <div class="prose prose-lg dark:prose-invert max-w-none">
-              <p class="text-gray-700 dark:text-gray-300">
+              <p class="text-white dark:text-white">
                 {props.project.detailedDescription}
               </p>
             </div>
@@ -409,14 +409,14 @@
           {#if props.project.technologies && props.project.technologies.length > 0}
             <section>
               <h3
-                class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
+                class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-white dark:border-gray-700 dark:text-white"
               >
                 Technologies Used
               </h3>
               <div class="mt-3 flex flex-wrap gap-2">
                 {#each props.project.technologies as tech}
                   <span
-                    class="rounded-full bg-gray-200 px-3 py-1.5 text-sm font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+                    class="rounded-full bg-gray-200 px-3 py-1.5 text-sm font-medium text-white dark:bg-gray-700 dark:text-white"
                   >
                     {tech}
                   </span>
@@ -428,12 +428,12 @@
             {#if props.project.problem}
               <section>
                 <h3
-                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
+                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-white dark:border-gray-700 dark:text-white"
                 >
                   Problem Statement
                 </h3>
                 <div class="prose prose-lg dark:prose-invert max-w-none">
-                  <p class="text-gray-700 dark:text-gray-300">
+                  <p class="text-white dark:text-white">
                     {props.project.problem}
                   </p>
                 </div>
@@ -443,12 +443,12 @@
             {#if props.project.solution}
               <section>
                 <h3
-                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
+                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-white dark:border-gray-700 dark:text-white"
                 >
                   Solution
                 </h3>
                 <div class="prose prose-lg dark:prose-invert max-w-none">
-                  <p class="text-gray-700 dark:text-gray-300">
+                  <p class="text-white dark:text-white">
                     {props.project.solution}
                   </p>
                 </div>
@@ -458,12 +458,12 @@
             {#if props.project.currentFocus}
               <section>
                 <h3
-                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
+                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-white dark:border-gray-700 dark:text-white"
                 >
                   Current Focus
                 </h3>
                 <div class="prose prose-lg dark:prose-invert max-w-none">
-                  <p class="text-gray-700 dark:text-gray-300">
+                  <p class="text-white dark:text-white">
                     {props.project.currentFocus}
                   </p>
                 </div>
@@ -473,12 +473,12 @@
             {#if props.project.futurePlans}
               <section>
                 <h3
-                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
+                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-white dark:border-gray-700 dark:text-white"
                 >
                   Future Plans
                 </h3>
                 <div class="prose prose-lg dark:prose-invert max-w-none">
-                  <p class="text-gray-700 dark:text-gray-300">
+                  <p class="text-white dark:text-white">
                     {props.project.futurePlans}
                   </p>
                 </div>
@@ -488,12 +488,12 @@
             {#if props.project.funfacts}
               <section>
                 <h3
-                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
+                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-white dark:border-gray-700 dark:text-white"
                 >
                   Fun Facts
                 </h3>
                 <div class="prose prose-lg dark:prose-invert max-w-none">
-                  <p class="text-gray-700 dark:text-gray-300">
+                  <p class="text-white dark:text-white">
                     {props.project.funfacts}
                   </p>
                 </div>
@@ -503,15 +503,15 @@
             {#if props.project.features && props.project.features.length > 0}
               <section>
                 <h3
-                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
+                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-white dark:border-gray-700 dark:text-white"
                 >
                   Key Features
                 </h3>
                 <ul
-                  class="list-disc space-y-2 pl-5 text-gray-700 dark:text-gray-300"
+                  class="list-disc space-y-2 pl-5 text-white dark:text-white"
                 >
                   {#each props.project.features as feature}
-                    <li>{feature}</li>
+                    <li class="text-white dark:text-white">{feature}</li>
                   {/each}
                 </ul>
               </section>
@@ -520,15 +520,15 @@
             {#if props.project.sources && props.project.sources.length > 0}
               <section>
                 <h3
-                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
+                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-white dark:border-gray-700 dark:text-white"
                 >
                   Sources
                 </h3>
                 <ul
-                  class="list-disc space-y-2 pl-5 text-gray-700 dark:text-gray-300"
+                  class="list-disc space-y-2 pl-5 text-white dark:text-white"
                 >
                   {#each props.project.sources as source}
-                    <li>{source}</li>
+                    <li class="text-white dark:text-white">{source}</li>
                   {/each}
                 </ul>
               </section>
@@ -537,12 +537,12 @@
             {#if props.project.challenges}
               <section>
                 <h3
-                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-gray-800 dark:border-gray-700 dark:text-gray-200"
+                  class="mb-3 border-b border-gray-200 pb-2 text-xl font-semibold text-white dark:border-gray-700 dark:text-gray-200"
                 >
                   Challenges & Learnings
                 </h3>
                 <div class="prose prose-lg dark:prose-invert max-w-none">
-                  <p class="text-gray-700 dark:text-gray-300">
+                  <p class="text-white dark:text-white">
                     {props.project.challenges}
                   </p>
                 </div>
