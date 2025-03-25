@@ -206,6 +206,12 @@
     }
   })
 
+  $effect(() => {
+  if (modalElement) {
+    modalElement.focus()
+  }
+})
+
   onDestroy(() => {
     if (modalElement) {
       modalElement.classList.remove("animation-complete")
@@ -288,7 +294,8 @@
       </button> -->
 
       <!-- Scrollable content container -->
-      <div class="modal-content flex-grow overflow-y-auto">
+      <div class="modal-content flex-grow overflow-y-auto"
+      >
         <!-- Image gallery -->
         <div class="relative h-72 w-full bg-gray-800 sm:h-80 md:h-96">
           {#if props.project.galleryImages.length > 0}

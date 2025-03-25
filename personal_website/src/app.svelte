@@ -85,7 +85,10 @@
 >
   <Audio />
   <div class="relative w-full max-w-4xl flex-1">
-    <PreviewPanel {hoveredProject} />
+    <PreviewPanel 
+    {hoveredProject} 
+    onProjectSelect={handleProjectSelect}
+    />
     <ProjectCarousel
       {projects}
       {hoveredProject}
