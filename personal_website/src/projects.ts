@@ -23,7 +23,7 @@ export const projects: Project[] = [
       "Python",
       "CSS",
     ],
-    linkedinUrl: "https://www.linkedin.com/in/anthony-w03/",
+    linkedinUrl: "https://www.linkedin.com/in/anthony-white03/",
     galleryImages: [
       "/media/images/projectImages/MyNameIs.png"
     ],
