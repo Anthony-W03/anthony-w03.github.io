@@ -580,7 +580,7 @@
 
             {#if props.project.linkedinUrl}
               <a
-                href={props.project.githubUrl}
+                href={props.project.linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="flex items-center rounded-md bg-blue-600 px-6 py-3 font-medium text-white transition-colors hover:bg-blue-700"
